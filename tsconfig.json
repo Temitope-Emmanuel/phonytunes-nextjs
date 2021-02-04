@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/assets/images/index.js", "src/assets/images/world/index.js", "src/assets/images/trusted/index.js", "src/assets/images/main/index.js", "src/assets/images/getStarted/index.js", "src/assets/images/clusterImg/index.js", "src/assets/images/brandImage/index.js"  ],
   "exclude": [
     "node_modules"
   ]

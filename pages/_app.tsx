@@ -3,7 +3,7 @@ import {AppProps} from "next/app"
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from '../utils/styles/theme'
+import theme from '../src/assets/styles/theme'
 
 const MyApp = ({Component,pageProps}:AppProps) => {
   
