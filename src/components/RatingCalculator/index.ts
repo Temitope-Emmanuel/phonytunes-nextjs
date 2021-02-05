@@ -1,0 +1,1 @@
+export {default as RatingCalculator} from "./RatingCalculator"

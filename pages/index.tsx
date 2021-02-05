@@ -52,7 +52,6 @@ const Home = () => {
       easing:"ease-out",
       duration:1500
     })
-    
   },[])
     const classes = useStyles()    
     return(
@@ -66,7 +65,6 @@ const Home = () => {
             <Image width={500} height={500}  layout="responsive" data-aos="flip-left" src={`/clusterImg/${backgroundImage[1]}`} />
           </Box>
           <Services/>
-          
           <Footer/>
         </Box>
     )

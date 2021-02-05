@@ -133,7 +133,7 @@ const Atlas = () => {
                 }
             }).then(data => data.json()).then(response => {
               setRates(response.bpi)
-            })
+            }).catch(err => {})
         }
         apiCall()
     },[])

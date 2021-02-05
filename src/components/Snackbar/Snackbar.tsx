@@ -2,17 +2,16 @@ import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import {Alert} from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
-import {IDialog,DialogContext} from "../../utils/SnackContext"
-// import {SnackConsumer} from "../config/SnackContext"
+import {IAlert,AlertContext} from "./SnackContext"
 
 
 export const SnackConsumer = <P extends object>(Component:React.ComponentType<P>) => (
   ({...props}) => (
-  <DialogContext.Consumer>
+  <AlertContext.Consumer>
     {(context) => (
         <Component context={context} {...props as P} />
     )}
-</DialogContext.Consumer>)
+</AlertContext.Consumer>)
 )
 
 function MuiAlert(props:any) {
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const SnackbarComponent:React.SFC<IDialog> = ({open,payload:{type,message},...props}) => {
+const SnackbarComponent:React.FC<IAlert> = ({open,payload:{type,message},...props}) => {
   const classes = useStyles();
 
 

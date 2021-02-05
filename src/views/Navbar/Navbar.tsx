@@ -12,7 +12,6 @@ import {Box, createStyles, Theme} from "@material-ui/core"
 import {deepOrange,red,orange} from "@material-ui/core/colors"
 // import {signout,retrieveJwt} from "../auth/auth-helper"
 import Link from "next/link"
-import {DialogContext} from "../../utils/SnackContext"
 
 const useStyles = makeStyles((theme:Theme) =>
     createStyles({
@@ -121,7 +120,6 @@ const Navbar = () => {
 //   const jwt = retrieveJwt()
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const context = React.useContext(DialogContext)
   const onScroll = (e:any) => {
     setScrolling(curSt => ({
       scrollTop:e.target.documentElement.scrollTop,

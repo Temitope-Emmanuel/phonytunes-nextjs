@@ -21,6 +21,7 @@
     "@types/react-swipeable-views-utils": "^0.13.2",
     "aos": "^2.3.4",
     "cross-env": "^7.0.3",
+    "firebase": "^8.2.5",
     "firebase-admin": "^9.4.2",
     "firebase-functions": "^3.13.1",
     "next": "10.0.6",

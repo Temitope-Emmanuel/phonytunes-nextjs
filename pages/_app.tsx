@@ -4,9 +4,11 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/assets/styles/theme'
+import {FirebaseProvider} from "../src/firebase/context"
+import SnackProvider from "../src/components/Snackbar/SnackContext"
+
 
 const MyApp = ({Component,pageProps}:AppProps) => {
-  
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -29,4 +31,4 @@ const MyApp = ({Component,pageProps}:AppProps) => {
     </React.Fragment>
   );
 }
-export default MyApp
+export default SnackProvider(FirebaseProvider(MyApp))

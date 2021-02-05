@@ -1,19 +1,19 @@
 import React from "react"
-import {Snackbar} from "../components/Snackbar"
+import {Snackbar} from "."
 
 export interface IPayload {
     type:"error" | "info" | "success" | "warning" | "";
     message:string
 }
 
-export interface IDialog {
+export interface IAlert {
     payload:IPayload;
     open:boolean;
     handleOpen?(arg:IPayload) :void
 }
 
 
-export const DialogContext = React.createContext<IDialog>({
+export const AlertContext = React.createContext<IAlert>({
     payload:{
         type:"",
         message:""
@@ -37,12 +37,12 @@ const SnackProvider = <P extends object>(Component: React.ComponentType<P>) => {
             },4000)
         }
         return(
-            <DialogContext.Provider value={{
+            <AlertContext.Provider value={{
                 payload:alert,open:openSnackbar,
                 handleOpen:handleSnackbar}} >
                     <Snackbar handleOpen={handleSnackbar} open={openSnackbar} payload={alert} />
                     <Component {...props as P} />
-            </DialogContext.Provider>
+            </AlertContext.Provider>
         )
     }
 }
