@@ -11,7 +11,8 @@ interface SimpleDialogProps {
 const SimpleDialog:React.FC<SimpleDialogProps> = ({open,handleToggle,children}) => {
 
   return (
-    <Dialog onClose={handleToggle} aria-labelledby="simple-dialog-title" open={open}>
+    <Dialog onClose={handleToggle} aria-labelledby="simple-dialog-title"
+     fullWidth={true} maxWidth="sm" open={open}>
         {children}
     </Dialog>
   );

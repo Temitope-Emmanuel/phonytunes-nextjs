@@ -10,7 +10,7 @@ class Firebase {
 
     public auth:ReturnType<typeof firebase.auth>;
     public firestore:ReturnType<typeof firebase.firestore>;
-    public storage;
+    public storage:ReturnType<typeof firebase.storage>;
     public googleProvider:InstanceType<typeof firebase.auth.GoogleAuthProvider>;
     public facebookProvider:InstanceType<typeof firebase.auth.FacebookAuthProvider>;
     public twitterProvider;
@@ -23,6 +23,7 @@ class Firebase {
         }
         this.auth = firebase.auth();
         this.firestore = firebase.firestore();
+        this.storage = firebase.storage();
         this.googleProvider = new firebase.auth.GoogleAuthProvider();
         this.facebookProvider = new firebase.auth.FacebookAuthProvider();
         this.twitterProvider = new firebase.auth.TwitterAuthProvider()
@@ -66,6 +67,20 @@ class Firebase {
             result.concat(alphaNumber[Math.round(Math.random()*alphaNumber.length)])
         }
         return result
+    }
+    uploadMedia = async (userId:string,mediaFile:File) => {
+        const filePath = `/media/${userId}/${mediaFile.name}-${(new Date()).getTime()}`
+        const storageRef = this.storage.ref(filePath)
+        try{
+            const response = await storageRef.put(mediaFile)
+            const imageUrl = await response.ref.getDownloadURL()
+            return {
+                filePath,
+                imageUrl
+            }
+        }catch(err){
+            throw err
+        }
     }
 }
 export default Firebase

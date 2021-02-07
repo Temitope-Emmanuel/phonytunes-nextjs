@@ -1,15 +1,13 @@
 import React from "react"
 import {makeStyles,Theme,createStyles} from "@material-ui/core/styles"
 import {Box} from "@material-ui/core"
-import "./Bubble.css"
-import {IComment} from "../../../core/models"
+import {IChat} from "../../../core/models"
 import {Avatar,Collapse,IconButton,Typography} from "@material-ui/core"
-import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded';
-import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+import {MdHighlightOff} from 'react-icons/md';
+import {IoIosArrowBack} from 'react-icons/io';
 import {red} from "@material-ui/core/colors"
-import useCollection from "../../../utils/useCollection"
-import useDocument from "../../../utils/useDocument"
 import getUser from "../../../utils/userAuth"
+import {formatDistanceToNow} from "date-fns"
 
 const useStyles = makeStyles((theme:Theme) => (
     createStyles({
@@ -53,29 +51,28 @@ const useStyles = makeStyles((theme:Theme) => (
     })
 ))
 
+
 interface IProps {
-    commentId:string;
+    message:IChat;
+    deleteMessage:() => void;
 }
 
-const Comment:React.FC<IProps> = ({commentId}) => {
+const Message:React.FC<IProps> = ({message,deleteMessage}) => {
     const classes =  useStyles()
-    const {currentUser:{currentUser}} = getUser()
-    const {document,deleteDocument} = useDocument("comments",commentId)    
+    const {currentUser} = getUser()
     const [deleteSlide,setDeleteSlide] = React.useState(false)
 
     const handleSlide = () =>{
         setDeleteSlide(!deleteSlide)
     }
-    // const handleDelete = () => {
-    //     deleteComment(_id)
-    // }
+
     return(
         <Box style={{
             flexDirection:currentUser ? "row-reverse" : "row"
         }}
              className={classes.root}>
                 <Avatar className={classes.large} 
-                alt={author._id} 
+                alt={message.author} 
                 // src={user.profileImage}
                 />
     
@@ -83,31 +80,33 @@ const Comment:React.FC<IProps> = ({commentId}) => {
                     <Box onClick={handleSlide} style={{marginLeft:".4em",zIndex:3}}
                      className="bubble">
                         <Typography style={{fontSize:".8em"}} component="span" variant="body1">
-                            {body}
+                            {message.body}
                         </Typography>
                         <Typography component="span" variant="subtitle2" 
                             className={classes.dateContainer}>
-                        {(new Date(createdAt)).toLocaleTimeString()}  
+                        {`${formatDistanceToNow((message.createdAt as any).toDate())} ago`}  
                         </Typography>
                     </Box>
-                {/* {props.creator === user.username &&  */}
-                {/* <Collapse
+                {/* {message.author === currentUser?.uid && 
+                <Collapse
                 timeout={600}
                 style={{transform:"rotate(90deg)"}}
                 collapsedHeight={40}
                     in={deleteSlide}>
                         <Box className={classes.actionContainer}>
                             <IconButton onClick={handleSlide}>
-                                <ArrowBackIosRoundedIcon 
+                                <IoIosArrowBack 
                                  style={{transform:!deleteSlide ? "rotate(90deg)": "rotate(630deg)",zIndex:105}} />
                             </IconButton>
-                            <IconButton onClick={handleDelete}>
-                               <HighlightOffRoundedIcon 
+                            <IconButton onClick={deleteMessage}>
+                               <MdHighlightOff 
                                 style={{backgroundColor:red[300],color:red[800],transform:!deleteSlide ? "rotate(90deg)": "rotate(630deg)"}} />
                             </IconButton>
                         </Box>
-                    </Collapse> */}
+                    </Collapse> } */}
                 </Box>
             </Box>
     )
 }
+
+export default Message

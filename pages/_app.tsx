@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/assets/styles/theme'
 import {FirebaseProvider} from "../src/firebase/context"
 import SnackProvider from "../src/components/Snackbar/SnackContext"
-
+import "../src/assets/styles/Bubble.css"
 
 const MyApp = ({Component,pageProps}:AppProps) => {
   React.useEffect(() => {

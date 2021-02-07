@@ -1,6 +1,7 @@
 import firebase from "firebase"
+import {IBaseModel} from "./BaseModel"
 
-export interface IAccount {
+export interface IAccount extends IBaseModel {
     username:string;
     email:string;
     pictureUrl:string;

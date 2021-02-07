@@ -1,19 +1,18 @@
 import React from "react"
 import firebaseContext from "../firebase/context"
 import {AlertContext} from "../components/Snackbar/SnackContext"
+import {collectionType} from "./useCollection"
 
-interface collectionType {
-    id:string;
-    [key:string]:any
+interface collectionArg {
+    collectionName:collectionType;
+    documentId:string
 }
 
-// const useDocument = <T extends unknown>(x: T) => x
-const useDocument = <T extends collectionType >(collectionId:string,documentId:string) => {
-// const useDocument = (collectionId:string,documentId:string) => {
-    const [document,setDocument] = React.useState<T>()
+const useDocument = ({collectionName,documentId}:collectionArg) => {
+    const [document,setDocument] = React.useState()
     const firebaseClass = React.useContext(firebaseContext)
     const alert = React.useContext(AlertContext)
-    const documentRef = firebaseClass.firestore.collection(collectionId).doc(documentId)
+    const documentRef = firebaseClass.firestore.collection(collectionName).doc(documentId)
 
     const updateDocument = async (arg:any) => {
         try{
@@ -41,6 +40,10 @@ const useDocument = <T extends collectionType >(collectionId:string,documentId:s
     }
     const deleteDocument = async () => {
         try{
+            alert.handleOpen({
+                message:`${collectionName} deleted succesful`,
+                type:"success"
+            })
             await documentRef.delete()
         }catch(err){
             alert.handleOpen({
