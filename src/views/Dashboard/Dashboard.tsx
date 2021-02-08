@@ -325,6 +325,7 @@ const AddRates: React.FC<createRatesProps> = ({ close }) => {
     const [title, setTitle, resetTitle] = useInputState("")
     const alert = React.useContext(AlertContext)
     const [rates, setRates] = React.useState<IPrice[]>([])
+    const firebaseClass = React.useContext(FirebaseContext)
     const [currentPriceDetail, setCurrentPriceDetail] = React.useState({
         name: "",
         price: 25
@@ -364,17 +365,15 @@ const AddRates: React.FC<createRatesProps> = ({ close }) => {
             label: '10,000 naira',
         }
     ];
-    // React.useEffect(() => {
-    //     loadCardRates();
-    // }, [])
 
     const handleSubmit = async () => {
         setSubmitting(true)
         const newCardRates = {
             name: title,
-            rates:{
+            createdAt:firebaseClass.createTimeStamp(),
+            rates:[
                 ...rates
-            }
+            ]
         }
 
         await createCardRates(newCardRates)
@@ -419,7 +418,7 @@ const AddRates: React.FC<createRatesProps> = ({ close }) => {
                     return (
                     <li key={`${data.name}-${idx}`}>
                         <Chip
-                        label={`${data.name}-₦${data.price}00`}
+                        label={`${data.name}-₦${data.price}`}
                         onDelete={handleDelete(data)}
                         className={classes.chip}
                         />
@@ -456,11 +455,11 @@ const AddRates: React.FC<createRatesProps> = ({ close }) => {
                         variant="outlined"
                     />
                 </Box>
-                    <Button onClick={handleAddToRates} style={{
+                    <Button onClick={handleAddToRates} disabled={!currentPriceDetail.name.length} style={{
                         color: "black",
                         backgroundColor: deepOrange[700]
                     }}> 
-                        Add
+                        {currentPriceDetail.name.length ? 'Add':"Please add a category name"}
                     </Button>
             </DialogContent>
             <DialogActions style={{
