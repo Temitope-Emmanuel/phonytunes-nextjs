@@ -3,6 +3,7 @@ import {makeStyles,createStyles,Theme} from "@material-ui/core/styles"
 import {Box,Typography} from "@material-ui/core"
 import {deepOrange} from "@material-ui/core/colors"
 import useCollection from "../src/utils/useCollection"
+import {formatDistanceToNow} from "date-fns"
 
 const useStyles = makeStyles((theme:Theme) => (
     createStyles({
@@ -61,11 +62,15 @@ interface IBlog {
 
 const BlogPage = () => {
     const classes = useStyles()
-    const {documentsInCollection:blogs,error,loadCollection} = useCollection("blogs")
+    const {documentsInCollection:blogs,loadCollection:loadBlogs} = useCollection({
+        collectionName:"blogs"
+    })
     
     React.useEffect(() => {
-        loadCollection()
+        loadBlogs()
     },[])
+
+    console.log(blogs)
 
     return(
         <Box className={classes.root}>
@@ -73,7 +78,7 @@ const BlogPage = () => {
                 PHONYTUNES BLOG
             </Typography>
             <Box className={classes.blogContainer}>
-                {blogs && blogs.map((blog,idx) =>(
+                {blogs.map((blog,idx) =>(
                     <Box key={idx} className={classes.bodyContainer} >
                         <Box>
                             <Typography style={{alignSelf:'"flex-start'}}
@@ -81,9 +86,9 @@ const BlogPage = () => {
                                 {blog.title}
                             </Typography>
                             <Typography variant="body1" >
-                                {blog.body.substring(0,150)}...
+                                {blog.content.substring(0,150)}...
                             </Typography>
-                            <Typography style={{alignSelf:'"flex-start'}} variant="caption" >{new Date(blog.createdAt).toLocaleString()}</Typography>
+                            <Typography style={{alignSelf:'"flex-start'}} variant="caption" >{formatDistanceToNow(blog.createdAt.toDate())} ago </Typography>
                         </Box>
                         <Box className={classes.imageContainer}></Box>
                     </Box>
