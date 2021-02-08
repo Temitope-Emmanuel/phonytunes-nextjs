@@ -11,10 +11,7 @@ import {Dashboard} from "../../src/views/Dashboard"
 import {TransactionTable} from '../../src/components/TransactionTable'
 import {Footer} from "../../src/views/Footer"
 import {orange} from "@material-ui/core/colors"
-import {IComment} from "../../src/core/models"
 import getUser from "../../src/utils/userAuth"
-import useCollection from "../../src/utils/useCollection"
-
 interface ITabProps {
     children:React.ReactNode;
     value:number;
@@ -79,27 +76,6 @@ const useStyles = makeStyles((theme:Theme) => (
     })
 ))
 
-export interface ICard {
-    image:string;
-    owner:string;
-    _id:string;
-    name:string;
-    status:string;
-    createdAt:Date;
-    comments:IComment[];
-  
-  }
-  
-  export interface IUser {
-    username:string;
-    email:string;
-    admin:boolean;
-    verified:boolean;
-    card?:ICard[];
-    referral:string;
-    referralCount:number;
-  }
-  
 
   const UserComponent = () => {
     const classes = useStyles()

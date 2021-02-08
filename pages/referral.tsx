@@ -87,7 +87,9 @@ const useStyles = makeStyles((theme:Theme) => (
 
 const Referral = () => {
     const classes = useStyles()
-    const {documentsInCollection,error,loadCollection:loadReferral} = useCollection("referral")
+    const {documentsInCollection,loadCollection:loadReferral} = useCollection({
+        collectionName:"referral"
+    })
     const [referrals,setReferrals] = React.useState<IReferral[]>([])
 
     React.useEffect(() => {
@@ -131,3 +133,5 @@ const Referral = () => {
         </Box>
     )
 }
+
+export default Referral

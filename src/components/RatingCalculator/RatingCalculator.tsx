@@ -156,7 +156,8 @@ const RatingCalculator = () => {
 
     const handleSubCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCurrentSubCategory({
-            name:event.currentTarget.value
+            name:event.currentTarget.value,
+            price:0
         })
       };
 
