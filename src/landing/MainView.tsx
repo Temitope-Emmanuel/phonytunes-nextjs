@@ -1,20 +1,18 @@
 import React from "react"
-import {Box, DialogActions, DialogContent, DialogTitle} from "@material-ui/core"
+import {Box, DialogContent, DialogTitle} from "@material-ui/core"
 import Link from "next/link"
-import useRouter from "next/router"
 import {makeStyles,createStyles,Theme} from "@material-ui/core/styles"
-import Typed from "react-typed"
 import {Button,Typography,IconButton,ButtonGroup,List,ListItem,ListItemAvatar,Avatar,ListItemText} from "@material-ui/core"
 import { deepOrange } from "@material-ui/core/colors"
-import useUserAuth from "../utils/userAuth"
 import {Dialog} from "../components/Dialog"
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import {FcGoogle} from "react-icons/fc"
 import {FaTwitter,FaFacebookSquare} from "react-icons/fa"
-import firebaseContext from "../firebase/context"
-import {AlertContext} from "../components/Snackbar/SnackContext"
-import {IAccount} from "../core/models"
+import { useFirebase } from "react-redux-firebase"
+import { useAppSelector } from "store/hooks"
+import { useAlertService } from "core/utils/Alert/AlertContext"
+import { useRouter } from "next/router"
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -139,14 +137,14 @@ const SignupDialog:React.FC<SignupDialogProps> = ({handleToggle,title,options}) 
             ))}
             </List>
             </DialogContent>
-            <DialogActions>
+            <Box className="flex py-5 justify-center">
               <Button onClick={handleToggle} color="primary">
                 Cancel
               </Button>
               <Button onClick={handleToggle} color="primary">
                 Subscribe
               </Button>
-            </DialogActions>
+            </Box>
         </>
     )
 }
@@ -155,61 +153,26 @@ const SignupDialog:React.FC<SignupDialogProps> = ({handleToggle,title,options}) 
 const MainView = () => {
     const classes = useStyles()
     const [index,setIndex] = React.useState(1)
-    const alert = React.useContext(AlertContext)
-    const {currentUser} = useUserAuth()
-    const firebaseClass = React.useContext(firebaseContext)
+    const firebase = useFirebase()
     const [open,setOpen] = React.useState(false)
-    const router = useRouter
+    const dialog = useAlertService()
+    const router = useRouter()
+    const currentProfile = useAppSelector(state => state.firebase.profile)
     const handleToggle = () => {
         setOpen(!open)
     }
 
-    const createNewUser = authUser => {
-        console.log("this is the google user",authUser)
-        const {user} = authUser
-        const newUser:IAccount = {
-            username:user?.displayName,
-            email:user.email,
-            roles:[],
-            referralNumber:firebaseClass.generateReferral(),
-            createdAt:firebaseClass.createTimeStamp(),
-            cards:[],
-            referralCount:0,
-            pictureUrl:user.photoURL ? user.photoURL : ""
-        }
-        firebaseClass.createNewUser(newUser).then(() => {
-            alert.handleOpen({
-                type:"success",
-                message:"User Logged in Successful"
-            })
-            router.push(`/user/${user.uid}`)
-        })
-    }
-
-    const signInWithGoogle = () => {
-        firebaseClass.signInWithGoogle().then(createNewUser).catch(err => {
-            console.log("there's been an err",err)
-            alert.handleOpen({
+    const createNewUser = (arg:"google" | "twitter" | "facebook") => () => {
+        firebase.login({
+            provider:arg,
+            type:"popup"
+        }).then(user => {
+            router.push(`/user/${user.user.uid}/`)
+        }).catch(err => {
+            dialog({
                 type:"error",
-                message:`Something went wrong:${err.message}`
-            })
-        })
-    }
-    const signInWithFacebook = () => {
-        firebaseClass.signInWithFacebook().then(createNewUser).catch(err => {
-            console.log("there's been an err",err)
-            alert.handleOpen({
-                type:"error",
-                message:`Something went wrong:${err.message}`
-            })
-        })
-    }
-    const signInWithTwitter = () => {
-        firebaseClass.signInWithTwitter().then(createNewUser).catch(err => {
-            console.log("there's been an err",err)
-            alert.handleOpen({
-                type:"error",
-                message:`Something went wrong:${err.message}`
+                title:"Unable to complete request",
+                message:`Error:${err.message}`
             })
         })
     }
@@ -217,17 +180,17 @@ const MainView = () => {
     const signInOptions = [
         {
             icon:<FcGoogle/>,
-            func:signInWithGoogle,
+            func:createNewUser("google"),
             title:"Sign in with Google"   
         },
         {
             icon:<FaTwitter/>,
-            func:signInWithTwitter,
+            func:createNewUser("twitter"),
             title:"Sign in with Twitter"
         },
         {
             icon:<FaFacebookSquare/>,
-            func:signInWithFacebook,
+            func:createNewUser("facebook"),
             title:"Sign in with Facebook"
         }
     ]
@@ -256,8 +219,8 @@ const MainView = () => {
                     <Button style={{
                     backgroundColor:"rgba(0,0,0,1)",
                     color:deepOrange[900]}}>    
-                        {currentUser ?
-                        <Link data-aos="fade" data-aos-delay={1000} href={`/user/${currentUser.uid}`} >
+                        {!currentProfile.isEmpty ?
+                        <Link data-aos="fade" data-aos-delay={1000} href={`/user/${currentProfile.id}`} >
                             Profile
                         </Link>:
                         <Typography onClick={handleToggle} >

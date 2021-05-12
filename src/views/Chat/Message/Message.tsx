@@ -2,10 +2,7 @@ import React from "react"
 import {makeStyles,Theme,createStyles} from "@material-ui/core/styles"
 import {Box} from "@material-ui/core"
 import {IChat} from "../../../core/models"
-import {Avatar,Collapse,IconButton,Typography} from "@material-ui/core"
-import {MdHighlightOff} from 'react-icons/md';
-import {IoIosArrowBack} from 'react-icons/io';
-import {red} from "@material-ui/core/colors"
+import {Avatar,Typography} from "@material-ui/core"
 import getUser from "../../../utils/userAuth"
 import {formatDistanceToNow} from "date-fns"
 
@@ -26,8 +23,8 @@ const useStyles = makeStyles((theme:Theme) => (
             }
         },
         large: {
-            width: theme.spacing(4),
-            height: theme.spacing(4),
+            width: theme.spacing(2),
+            height: theme.spacing(2),
           },
           commentContainer:{
               display:"flex",
@@ -79,7 +76,7 @@ const Message:React.FC<IProps> = ({message,deleteMessage}) => {
                 <Box className={classes.commentContainer}>
                     <Box onClick={handleSlide} style={{marginLeft:".4em",zIndex:3}}
                      className="bubble">
-                        <Typography style={{fontSize:".8em"}} component="span" variant="body1">
+                        <Typography style={{fontSize:".5em"}} component="span" variant="body1">
                             {message.body}
                         </Typography>
                         <Typography component="span" variant="subtitle2" 

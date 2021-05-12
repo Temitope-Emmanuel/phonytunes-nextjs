@@ -1,13 +1,13 @@
 import firebase from "firebase"
-import {IBaseModel} from "./BaseModel"
+import {DataBaseModel} from "./BaseModel"
 
-export interface IAccount extends IBaseModel {
+export interface IAccount extends DataBaseModel {
     username:string;
     email:string;
-    pictureUrl:string;
+    phoneNumber:number;
+    providerData:any[]
+    profileImage:string;
+    favorite:boolean;
     referralNumber:string;
-    roles:string[];
-    cards:string[];
-    referralCount:number;
-    createdAt:ReturnType<typeof firebase.firestore.FieldValue.serverTimestamp>
+    role:"Admin" | "User"
 }

@@ -128,7 +128,7 @@ const Atlas = () => {
         const apiCall = async function(){
             fetch(`https://api.coindesk.com/v1/bpi/currentprice/NGN.json`,{
                 method:"GET",
-                headers:{
+              headers:{
                     Accept:"application/json"
                 }
             }).then(data => data.json()).then(response => {
@@ -140,22 +140,6 @@ const Atlas = () => {
 
     return(
         <>
-            <div data-aos="fade" data-aos-delay={500} style={{
-                position:"sticky",
-                display:"flex",
-                flexDirection:"row",
-                justifyContent:"center",
-                alignItems:"center",
-                top:0
-            }} className={classes.ratesContainer}>
-                {rates.NGN &&
-                <>
-                    <p data-aos="fade" data-aos-delay={1000}>1 BTC - {rates.NGN.code}{rates.NGN.rate}</p>
-                    <p data-aos="fade" data-aos-delay={1100}>1 BTC - {rates.USD.code}{rates.USD.rate}</p>
-                </>
-            }
-            </div>
-        
             <Box className={classes.container}>
                 <h2 data-aos="zoom-right">24/7 WE GOT YOU</h2>
                 <p>Always here to do business with you</p>

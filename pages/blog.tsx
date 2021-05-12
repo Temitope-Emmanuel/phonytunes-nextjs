@@ -70,7 +70,7 @@ const BlogPage = () => {
         loadBlogs()
     },[])
 
-    console.log(blogs)
+    console.log(blogs[0])
 
     return(
         <Box className={classes.root}>

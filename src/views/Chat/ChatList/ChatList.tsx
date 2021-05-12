@@ -4,14 +4,14 @@ import {Box,Slide,Collapse} from "@material-ui/core"
 import {Message} from "../Message"
 import {IChat} from "../../../core/models"
 import {Button,Typography,IconButton,Input,FormControl,InputAdornment} from "@material-ui/core"
-import UseInputState from "../../../utils/useInputState"
+import UseInputState from "../../../utils/useCustomHooks"
 import {MdQuestionAnswer} from 'react-icons/md';
 import {RiSendPlaneFill} from 'react-icons/ri';
 import {GiCancel} from 'react-icons/gi';
 import {AlertContext} from "../../../components/Snackbar/SnackContext"
 import { deepOrange} from "@material-ui/core/colors"
 import getUser from "../../../utils/userAuth"
-import {FirebaseContext} from "../../../firebase"
+import {FirebaseContext} from "../../../firebaseUtils"
 
 const useStyles = makeStyles((theme:Theme) => (
     createStyles({

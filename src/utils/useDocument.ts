@@ -1,5 +1,5 @@
 import React from "react"
-import firebaseContext from "../firebase/context"
+import firebaseContext from "../firebaseUtils/context"
 import {AlertContext} from "../components/Snackbar/SnackContext"
 import {collectionType} from "./useCollection"
 

@@ -1,81 +1,59 @@
-import React from "react"
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import InputLabel from '@material-ui/core/InputLabel';
-import {makeStyles,createStyles,Theme} from "@material-ui/core/styles"
-import {Box} from "@material-ui/core"
-import UseInput from "../../../utils/useInputState"
+/* eslint-disable no-use-before-define */
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+  FormControl,FormHelperText
+} from "@material-ui/core"
+import { FieldProps,Field } from 'formik';
 
-const useStyles = makeStyles((theme:Theme) => (
-    createStyles({
-        root:{
-            "& > h2":{
-                color:"rgba(0,0,0,.8)",
-                fontWeight:600
-            }      
-        },
-        formControl:{
-            width:"100%"
-        }
-    })
-))
 
 interface IProps {
-    heading:string;
-    category:boolean;
+  name:string;
+  label:string;
+  disabled?:boolean;
+  showErrors?:boolean;
+  className?:string;
+  options:any[]
+  getLabel?:(arg:any) => string;
 }
 
-const SelectComponent:React.FC<IProps> = function({heading,category,...props}){
-    const [state,setState] = UseInput("")
-    
-    // const handleChange = (e:any) => {
-    //     setState(e.target.value)
-    // }
-    const classes = useStyles()
-    return(
-        <Box className={classes.root}>
-            <h2>{heading}</h2>
-            <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="outlined-age-native-simple">{heading}</InputLabel>
-                <Select
-                native
-                value={state}
-                onChange={setState}
-                label="Gift Card"
-                inputProps={{
-                    name: 'card',
-                    id: 'outlined-age-native-simple',
+
+const Select:React.FC<IProps> = ({
+  className,label,disabled,
+  name,options,getLabel
+}) => {
+
+  return (
+    <Field name={name}>
+        {({ field, form }:FieldProps) => {
+          return(
+            <FormControl disabled={disabled} className={className} variant="outlined">
+              <Autocomplete value={field.value} onChange={(evt:any,newValue:string | null) => {
+                form.setFieldValue(name,newValue,true)
+              }}
+                id={`${label}-${name}`} 
+                options={options}
+                getOptionSelected={(option:any,value) => {
+                  console.log({
+                    option,
+                    value
+                  })
+                  return getLabel ? getLabel(option) === getLabel(value) : option.includes(value)
                 }}
-                >
-                <option aria-label="None" value="" />
-                {!category ?
-                <> 
-                <option value={10}>Amazon</option>
-                <option value={20}>Xbox</option>
-                <option value={30}>Sephora</option>
-                <option value={30}>iTunes</option>
-                <option value={30}>Google play</option>
-                <option value={30}>Walmart</option>
-                <option value={30}>NordStrom</option>
-                <option value={30}>Ebay</option>
-                <option value={30}>American Express</option>
-                <option value={5}>other</option>
-                </>
-                :
-                <>
-                <option value={1}>$50</option>
-                <option value={1}>$100</option>
-                <option value={1}>$200</option>
-                <option value={1}>$300</option>
-                <option value={1}>$500</option>
-                <option value={1}>other</option>
-                </>
+
+                getOptionLabel={getLabel ? getLabel : (option) => option}
+                renderInput={(params) => <TextField {...params} label={label} variant="outlined" />}
+              />
+              { form.touched[name]  && 
+                  form.errors[name] &&
+                  <FormHelperText>{form.errors[name]}</FormHelperText>
                 }
-                </Select>
             </FormControl>
-        </Box>
-    )
+          )
+        }}
+      </Field>
+  );
 }
-export default SelectComponent
+
+export default Select

@@ -5,7 +5,9 @@ import Dialog from '@material-ui/core/Dialog';
 
 interface SimpleDialogProps {
   open: boolean;
-  handleToggle:() => void
+  title?:string;
+  handleToggle:() => void;
+  dialogAction?:any
 }
 
 const SimpleDialog:React.FC<SimpleDialogProps> = ({open,handleToggle,children}) => {
